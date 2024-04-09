@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메인 페이지</title>
 </head>
 <body>
-    <button><a href="{% url 'signup:signup' %}">sign up</a></button>
-    <button><a href="{% url 'signup:login' %}">login</a></button>
+
+<h2>환영합니다!</h2>
+
+<a href="{% url 'signup:signup' %}">로그인</a>
+<a href="{% url 'signup:login' %}">회원가입</a>
+
 </body>
 </html>
