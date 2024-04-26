@@ -40,5 +40,9 @@ def logout(request):
 def main(request):
     return render(request,'main.html')
 
+def mypage(request):
+    return render(request, 'mypage.html')
 
+def home(request):
+    return render(request,'home.html')
 # Create your views here.
