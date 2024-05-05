@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Main Page</title>
 </head>
 <body>
     {% if user.is_authenticated %}
-    <p>username: {{ user.name }}</p>
-    <p>nickname: {{ user.nickname }}</p>
-    <p>major: {{ user.major }}</p>
-    <p>ID: {{ user.id }}</p>
-    <p>e-mail: {{ user.email }}</p>
+    <h1>Welcome to the Main Page!</h1>
+    
+    
+    <button><a href="{% url 'signup:mypage' %}">mypage</a></button>
 
+    <!-- 로그아웃 링크 -->
     <button><a href="{% url 'signup:logout' %}">logout</a></button>
     {% endif %}
 </body>

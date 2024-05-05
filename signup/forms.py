@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser
+from .models import CustomUser, UserProFile
 
 
 class SignUpForm(forms.ModelForm):
@@ -24,3 +24,11 @@ class SignUpForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class UserProfileUpdateForm(forms.ModelForm):
+   class Meta:
+        model = CustomUser
+        fields = [ 'nickname','major', 'profile_pic','hobby', 'address']
+        widgets = {
+            'profile_pic': forms.FileInput(attrs={'class': 'form-control-file'}),
+        }

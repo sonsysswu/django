@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% csrf_token %}
+    <p>username: {{ user.name }}</p>
+    <p>nickname: {{ user.nickname }}</p>
+    <p>major: {{ user.major }}</p>
+    <p>ID: {{ user.id }}</p>
+    <p>e-mail: {{ user.email }}</p>
+    
+    {% if user.profile_pic %}
+        <p>프로필 사진:</p>
+        <img src="{{ user.profile_pic.url }}" alt="프로필 사진"><br><br>
+    {% endif %}
+
+    {% if user.hobby %}
+        <p>취미: {{ user.hobby }}</p>
+    {% endif %}
+
+    {% if user.address %}
+        <p>주소: {{ user.address }}</p>
+    {% endif %}
+    <button><a href="{% url 'signup:edit' %}">정보 수정</a></button>
+    <button><a href="{% url 'signup:home' %}">메인 페이지</a></button>
+</body>
+</html>

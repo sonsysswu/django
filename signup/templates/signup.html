@@ -9,7 +9,7 @@
 <body>
   <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
     {% endfor %}
   </ul>
     <form action="{%url 'signup:signup' %}" method="post">

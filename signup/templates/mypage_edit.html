@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 수정</title>
+</head>
+<body>
+    <h1>마이페이지 수정</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% comment %} <label for="nickname">닉네임:</label>
+        <input type="text" id="nickname" name="nickname" value="{{ user.nickname }}"><br><br>
+
+        <label for="major">전공:</label>
+        <input type="text" id="major" name="major" value="{{ user.major }}"><br><br>
+
+        <label for="profile_pic">프로필 사진:</label>
+        <input type="file" id="profile_pic" name="profile_pic"><br><br>
+
+        <label for="hobby">취미:</label>
+        <input type="text" id="hobby" name="hobby"><br><br>
+
+        <label for="address">주소:</label>
+        <input type="text" id="address" name="address"><br><br> {% endcomment %}
+
+        <form action="{%url 'signup:edit' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">저장</button>
+          </form>
+        <button><a href="{% url 'signup:mypage' %}">mypage</a></button>
+
+    </form>
+</body>
+</html>

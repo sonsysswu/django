@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm
+from .forms import SignUpForm,UserProfileUpdateForm
 from django.shortcuts import render,redirect
 from django.contrib import auth
 from django.contrib import messages
-from .models import CustomUser
+from .models import CustomUser, UserProFile
+
 
 # Create your views here.
 def signup(request):
@@ -39,6 +40,31 @@ def logout(request):
 
 def main(request):
     return render(request,'main.html')
+
+def mypage(request):
+    return render(request, 'mypage.html')
+
+def home(request):
+    return render(request,'home.html')
+
+def edit(request):
+    return render(request,'mypage_edit.html')
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = UserProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        try:
+            form.image=request.FILES['image']
+        except: #이미지가 없어도 그냥 지나가도록-!
+            pass
+        if form.is_valid():
+            form.save()
+            messages.success(request, '프로필이 성공적으로 업데이트되었습니다.')
+            return redirect('/signup/mypage')
+    else:
+        form = UserProfileUpdateForm(instance=request.user)
+    
+    return render(request, 'mypage_edit.html', {'form': form})
 
 
 # Create your views here.

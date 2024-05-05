@@ -48,6 +48,9 @@ class CustomUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
+    profile_pic = models.ImageField(upload_to='profile_pics/', blank=True)
+    hobby = models.CharField(max_length=100, blank=True)
+    address = models.CharField(max_length=200, blank=True)
     objects = UserManager() #위에서 정의한 헬퍼 클래스 불러와서 
 
     USERNAME_FIELD = 'id'
@@ -66,3 +69,9 @@ class CustomUser(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+    
+# class UserProFile(models.Model):
+#     user= models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+#     profile_pic = models.ImageField(upload_to='profile_pics/', blank=True)
+#     hobby = models.CharField(max_length=100, blank=True)
+#     address = models.CharField(max_length=200, blank=True)
