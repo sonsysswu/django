@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm,UserProfileUpdateForm
-from django.shortcuts import render,redirect
-from django.contrib import auth
-from django.contrib import messages
-from .models import CustomUser, UserProFile
-
+from .forms import SignUpForm,UserProfileUpdateForm,GuestbookForm
+from django.contrib import auth, messages
+from .models import CustomUser,GuestbookEntry
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def signup(request):
@@ -12,7 +11,6 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            #성공하면 home으로 바로 보냄
             return render(request, 'main.html')
         return render(request, 'signup.html', {'form': form })
     else:
@@ -25,10 +23,9 @@ def login(request):
         password=request.POST.get('password')
         user=auth.authenticate(request, id = id, password = password)
         #print(user)
-        #기본은 id가 아니고 username인데 CustomUser에서 USERNAME_FIELD='id'로 설정해서 일케 해야해여 backends.py에서 약간 바꿨어여
         if user is not None:
             auth.login(request, user)
-            return render(request,'home.html')
+            return redirect('signup:home')
         else:
             return render(request, 'login.html')
     else:
@@ -38,12 +35,13 @@ def logout(request):
     auth.logout(request)
     return redirect('main')
 
-def main(request):
-    return render(request,'main.html')
+# def main(request):
+#     return render(request,'main.html')
 
 def mypage(request):
     return render(request, 'mypage.html')
 
+@login_required
 def home(request):
     return render(request,'home.html')
 
@@ -66,5 +64,31 @@ def edit_profile(request):
     
     return render(request, 'mypage_edit.html', {'form': form})
 
+def main(request):
+    if request.method=='POST':
+        form=GuestbookForm(request.POST)
+        if form.is_valid():
+            name = request.POST['name']
+            message= request.POST['message']
+            password= form.cleaned_data['password']
+            entry= GuestbookEntry(name= name,message=message,guest_password= password)
+            entry.save()
+            return redirect('main')
+    else:
+        form =GuestbookForm()
 
+    entries= GuestbookEntry.objects.all()
+    return render(request,'main.html', {'form':form,'entries':entries})
+
+@csrf_exempt
+def delete_Guestbook(request, entry_id):
+    if request.method=='POST':
+        entry = GuestbookEntry.objects.get(pk=entry_id)
+        password= request.POST.get('password', '')
+        if password == entry.guest_password:
+            entry.delete()
+            messages.success(request,'방명록이 삭제되었습니다.')
+        else:
+            messages.error(request,'비밀번호가 올바르지 않습니다.')
+    return redirect('main')
 # Create your views here.

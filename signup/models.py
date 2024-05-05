@@ -70,8 +70,12 @@ class CustomUser(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
     
-# class UserProFile(models.Model):
-#     user= models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-#     profile_pic = models.ImageField(upload_to='profile_pics/', blank=True)
-#     hobby = models.CharField(max_length=100, blank=True)
-#     address = models.CharField(max_length=200, blank=True)
+class GuestbookEntry(models.Model):
+    name= models.CharField(max_length=100)
+    message= models.TextField()
+    guest_password= models.CharField(max_length=15,default='admin')
+    created_at= models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.name}-{self.created_at}'
+    

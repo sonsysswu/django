@@ -12,5 +12,25 @@
 <a href="{% url 'signup:signup' %}">회원가입</a>
 <a href="{% url 'signup:login' %}">로그인</a>
 
+<h2>방명록 작성하기</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">방명록 작성</button>
+    </form>
+    
+    <h2>방명록</h2>
+    <ul>
+        {% for entry in entries %}
+            <li><strong>{{ entry.name }}</strong>: {{ entry.message }}
+                <form method = "post" action = "{%url 'signup:delete_Guestbook' entry.id %}"
+                    {% csrf_token %}
+                    <input type ="password" name = "password" placeholder="비밀번호">
+                    <button type = "submit"> 삭제</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    
 </body>
 </html>

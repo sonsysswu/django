@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser, UserProFile
+from .models import CustomUser
 
 
 class SignUpForm(forms.ModelForm):
@@ -32,3 +32,8 @@ class UserProfileUpdateForm(forms.ModelForm):
         widgets = {
             'profile_pic': forms.FileInput(attrs={'class': 'form-control-file'}),
         }
+
+class GuestbookForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    message= forms.CharField(widget=forms.Textarea)
+    password= forms.CharField(max_length=15)
