@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser
+from .models import CustomUser,Todo,GuestbookEntry
 
 
 class SignUpForm(forms.ModelForm):
@@ -33,7 +33,15 @@ class UserProfileUpdateForm(forms.ModelForm):
             'profile_pic': forms.FileInput(attrs={'class': 'form-control-file'}),
         }
 
-class GuestbookForm(forms.Form):
-    name = forms.CharField(max_length=100)
-    message= forms.CharField(widget=forms.Textarea)
-    password= forms.CharField(max_length=15)
+class GuestbookForm(forms.ModelForm):
+    class Meta:
+        model= GuestbookEntry
+        fields=['name','message','guest_password']
+
+class TodoForm(forms.ModelForm):
+    class Meta:
+        model= Todo
+        fields=['text']
+        widgets={
+            'completed':forms.CheckboxInput()
+        }

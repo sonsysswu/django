@@ -79,3 +79,7 @@ class GuestbookEntry(models.Model):
     def __str__(self):
         return f'{self.name}-{self.created_at}'
     
+class Todo(models.Model):
+    # date=models.DateTimeField(auto_now=False, auto_now_add=False)
+    text=models.TextField()
+    completed = models.BooleanField(default=False)

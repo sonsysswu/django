@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm,UserProfileUpdateForm,GuestbookForm
+from .forms import SignUpForm,UserProfileUpdateForm,GuestbookForm,TodoForm
 from django.contrib import auth, messages
-from .models import CustomUser,GuestbookEntry
+from .models import CustomUser,GuestbookEntry,Todo
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def signup(request):
@@ -91,4 +92,26 @@ def delete_Guestbook(request, entry_id):
         else:
             messages.error(request,'비밀번호가 올바르지 않습니다.')
     return redirect('main')
-# Create your views here.
+
+@login_required
+def todolist(request):
+    if request.method=='POST':
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            # text= request.POST['text']
+            # completed = request.POST['completed']
+            # entry= Todo(text='text', completed='completed')
+            # entry.save()
+            form.save()
+            return redirect('signup:todolist')
+    else:
+        form= TodoForm()
+    todo_list = Todo.objects.all()
+    return render(request,'todolist.html', {'form':form, 'todo_list':todo_list})
+
+def delete_Todolist(request,todo_id):
+    todo = get_object_or_404(Todo, id=todo_id)
+    if request.method=='POST':
+        todo.delete()
+        return redirect('signup:todolist')
+    return render(request, 'todolist.html',{'todolist':todolist})

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+</head>
+<body>
+
+<button><a href="{% url 'signup:home' %}">돌아가기</a></button>
+
+<h2>To-Do List</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add</button>
+</form>
+
+<ul>
+    {% for todo in todo_list %}
+    <div style="display: flex;">
+        <input type="checkbox" {%if todo.completed %}checked{%endif%}>
+        <textarea readonly style="margin-right: 10px; border: none; background-color: transparent;">{{ todo.text }}</textarea>
+        <form method="post" action="{%url 'signup:delete_Todolist' todo.id %}">
+            {% csrf_token %}
+            <button type="submit">삭제</button>
+        </form>
+    </div>
+    {% endfor %}
+</ul>
+</body>
+</html>

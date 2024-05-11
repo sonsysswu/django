@@ -23,7 +23,7 @@
     <ul>
         {% for entry in entries %}
             <li><strong>{{ entry.name }}</strong>: {{ entry.message }}
-                <form method = "post" action = "{%url 'signup:delete_Guestbook' entry.id %}"
+                <form method = "post" action = "{%url 'signup:delete_Guestbook' entry.id %}">
                     {% csrf_token %}
                     <input type ="password" name = "password" placeholder="비밀번호">
                     <button type = "submit"> 삭제</button>

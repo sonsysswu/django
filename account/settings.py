@@ -124,6 +124,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'signup.CustomUser'
-AUTHENTICATION_BACKENDS = ["signup.backends.IdBackend"]
+AUTHENTICATION_BACKENDS = ["signup.backends.IdBackend"]     
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
