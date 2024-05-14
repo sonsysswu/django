@@ -5,6 +5,8 @@ from .models import CustomUser,GuestbookEntry,Todo
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+
 
 # Create your views here.
 def signup(request):
@@ -115,3 +117,10 @@ def delete_Todolist(request,todo_id):
         todo.delete()
         return redirect('signup:todolist')
     return render(request, 'todolist.html',{'todolist':todolist})
+
+@login_required
+def toggle_todo(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id)
+    todo.completed = not todo.completed  # Toggle the completed status
+    todo.save()
+    return redirect('signup:todolist')

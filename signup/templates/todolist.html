@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
+      
 </head>
 <body>
 
@@ -19,15 +20,19 @@
 
 <ul>
     {% for todo in todo_list %}
-    <div style="display: flex;">
-        <input type="checkbox" {%if todo.completed %}checked{%endif%}>
-        <textarea readonly style="margin-right: 10px; border: none; background-color: transparent;">{{ todo.text }}</textarea>
-        <form method="post" action="{%url 'signup:delete_Todolist' todo.id %}">
+    <li style="display: flex;">
+        <form method="post" action="{% url 'signup:toggle_todo' todo.id %}">
+            {% csrf_token %}
+            <input type="checkbox" {% if todo.completed %}checked{% endif %} onchange="this.form.submit()">
+        </form>
+        <textarea readonly style="width: 500px; height: 50px; margin-right: 10px; border: none; background-color: transparent;">{{ todo.text }}</textarea>
+        <form method="post" action="{% url 'signup:delete_Todolist' todo.id %}">
             {% csrf_token %}
             <button type="submit">삭제</button>
         </form>
-    </div>
+    </li>
     {% endfor %}
 </ul>
+
 </body>
 </html>
