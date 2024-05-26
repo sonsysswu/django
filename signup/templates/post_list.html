@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게시글</title>
+</head>
+<body>
+
+<button><a href="{% url 'signup:post_write' %}">게시글 작성하기</a></button>
+
+    <h2>게시글 목록</h2>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <h2><a href="{% url 'signup:post' post_id=post.pk %}"></h2>
+                <p>{{ post.title }}</a> 작성자: {{ post.author.nickname }} <small>{{ post.created_at }}</small></p>
+            </li>
+        {% endfor %}
+    </ul>
+        
+</body>
+</html>

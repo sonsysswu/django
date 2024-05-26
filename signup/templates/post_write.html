@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+</head>
+<body>
+    <h1>게시글</h1>
+
+    <form action="{% url 'signup:post_write' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% comment %} <div id="password_field">
+            <label for="password_input" id="password_label" style="display:none;">
+            {{ form.password }}
+        </div> {% endcomment %}
+        <button type="submit">작성</button>
+    </form>
+
+    <button><a href="{% url 'signup:post_list' %}">목록으로 돌아가기</a></button>
+    {% comment %} <script>
+        var checkbox = document.getElementById('secret_checkbox');
+        var passwordLabel = document.getElementById('password_label');
+        var passwordInput = document.getElementById('password_input');
+
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                passwordLabel.style.display = 'block';
+                passwordInput.style.display = 'block';
+            } else {
+                passwordLabel.style.display = 'none';
+                passwordInput.style.display = 'none';
+            }
+        });
+    </script> {% endcomment %}
+</body>

@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm,UserProfileUpdateForm,GuestbookForm,TodoForm
+from .forms import SignUpForm,UserProfileUpdateForm,GuestbookForm,TodoForm,PostForm,Post
 from django.contrib import auth, messages
 from .models import CustomUser,GuestbookEntry,Todo
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse,HttpResponseForbidden
+from django.contrib.auth.hashers import check_password
+
 
 
 # Create your views here.
@@ -124,3 +126,54 @@ def toggle_todo(request, todo_id):
     todo.completed = not todo.completed  # Toggle the completed status
     todo.save()
     return redirect('signup:todolist')
+
+@login_required
+def post_write(request):
+    if request.method=='POST':
+        form = PostForm(request.POST,user=request.user)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            form.save()
+            return redirect('signup:post', post_id=post.id)
+    else:
+        form = PostForm(user=request.user)
+    posts=Post.objects.all()
+    return render(request,'post_write.html', {'form':form,'posts':posts})
+
+@login_required
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, 'post_list.html', {'posts': posts})
+
+@login_required
+def post(request,post_id):
+    post = get_object_or_404(Post, pk=post_id)  # 해당 post_id에 해당하는 Post 객체를 가져옴
+    # if post.secret:
+    #     if request.method == 'POST':
+    #         password = request.POST.get('password')
+    #         if password == post.password:
+    #             return render(request, 'post.html', {'post': post})       
+    # else:
+    return render(request, 'post.html', {'post': post})
+
+@login_required
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post, user=request.user)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            form.save()
+            return redirect('signup:post', post_id=post_id)
+    else:
+        form = PostForm(instance=post, user=request.user)
+    return render(request, 'post_edit.html', {'form': form, 'post':post})
+
+def delete_post(request,post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method=='POST':
+        post.delete()
+        return redirect('signup:post_list')
+    return render(request, 'post_list.html',{'post_list':post_list})

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 정보</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>작성자: {{ post.author.nickname }}</p>
+    <p>{{ post.content }}</p>
+    <small>작성 시간: {{ post.created_at }}</small>
+    <br>
+    <button><a href="{% url 'signup:post_edit' post_id=post.id %}">수정</a></button>
+    <form method="post" action="{% url 'signup:delete_post' post.id %}">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+    </form>
+    <button><a href="{% url 'signup:post_list' %}">목록으로 돌아가기</a></button>
+</body>
+</html>

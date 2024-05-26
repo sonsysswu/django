@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser,Todo,GuestbookEntry
+from .models import CustomUser,Todo,GuestbookEntry, Post
 
 
 class SignUpForm(forms.ModelForm):
@@ -45,3 +45,20 @@ class TodoForm(forms.ModelForm):
         widgets={
             'completed':forms.CheckboxInput()
         }
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields=['title', 'content'] 
+        widgets={
+            'secret': forms.CheckboxInput(),
+            # 'secret': forms.CheckboxInput(attrs={'id': 'secret_checkbox'}),
+            # 'password': forms.PasswordInput(attrs={'style': 'display:none;', 'id': 'password_input'})
+        }
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(PostForm, self).__init__(*args, **kwargs)
+        if user and user.is_authenticated:
+            self.fields['nickname'] = forms.CharField(max_length=10, widget=forms.HiddenInput, initial=user.nickname)
+        # self.fields['password'].label = '비밀번호'
+        

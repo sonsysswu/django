@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup, login,logout,mypage,home,edit_profile,delete_Guestbook,todolist,delete_Todolist, toggle_todo
+from .views import signup,login,logout,mypage,home,edit_profile,delete_Guestbook,todolist,delete_Todolist, toggle_todo,post_write,post_list,post, post_edit, delete_post
 
 
 app_name='signup'
@@ -15,4 +15,9 @@ urlpatterns = [
     path('todolist/',todolist, name='todolist'),
     path('delete_Todolist/<int:todo_id>/',delete_Todolist,name='delete_Todolist'),
     path('toggle_todo/<int:todo_id>/', toggle_todo, name='toggle_todo'),
+    path('post_write/', post_write, name='post_write'),
+    path('post_list/',post_list,name='post_list'),
+    path('post/<int:post_id>/', post, name = 'post'),
+    path('post/<int:post_id>/edit/', post_edit, name='post_edit'),
+    path('delete_post/<int:post_id>/', delete_post,name='delete_post'),
 ]

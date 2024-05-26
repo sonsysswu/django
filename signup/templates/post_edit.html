@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+</head>
+<body>
+    <h1>게시글</h1>
+
+    <form action="{% url 'signup:post_edit' post_id=post.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">작성</button>
+    </form>
+
+    <button><a href="{% url 'signup:post_list' %}">목록으로 돌아가기</a></button>
+</body>

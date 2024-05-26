@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from django.contrib.auth.hashers import make_password
 #장고에서 기본적으로 제공해주는 유저 커스텀해서 만드는거
 
 class UserManager(BaseUserManager):
@@ -83,3 +86,17 @@ class Todo(models.Model):
     # date=models.DateTimeField(auto_now=False, auto_now_add=False)
     text=models.TextField()
     completed = models.BooleanField(default=False)
+
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='posts')
+    content= models.TextField()
+    secret = models.BooleanField(default= False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    password = models.CharField(max_length=128, blank=True)
+
+    def save(self, *args, **kwargs):
+        # 비밀번호가 입력된 경우에만 해싱하여 저장
+        if self.password:
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
